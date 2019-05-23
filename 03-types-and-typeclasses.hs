@@ -7,10 +7,10 @@
  - Have a play with the Colour in ghci, try the succ and pred functions and so on.
  -}
 data Colour = Red | Orange | Yellow | Green | Blue | Indigo | Violet
-    deriving (Eq, Ord, Show, Bounded, Enum)   
+    deriving (Eq, Ord, Show, Bounded, Enum)
 
 {-
- - Again, you should be able to write these functions in one line, 
+ - Again, you should be able to write these functions in one line,
  - using the information from the chapter http://learnyouahaskell.com/types-and-typeclasses
  - and the chapter before
  -}
@@ -19,10 +19,10 @@ data Colour = Red | Orange | Yellow | Green | Blue | Indigo | Violet
  - The Colour typeclass is of type Ord
  - What is the "first" (or least) colour
  -}
-firstColour = undefined
+firstColour = minBound :: Colour
 
 -- List the colours in reverse order
-reverseColourOrder = undefined
+reverseColourOrder = [Violet,Indigo .. Red]
 
 {-
  - Mix two colours together, to produce the average value of the two.
@@ -31,4 +31,8 @@ reverseColourOrder = undefined
  - For example: paintMix Green Violet = Indigo
  - Hint: Integer division can be performed with the quot function: quot 7 2 = 3
  -}
-paintMix c1 c2 = undefined
+paintMix c1 c2 =
+  let big   = fromEnum (max c1 c2)
+      small = fromEnum (min c1 c2)
+      q     = quot (big + small) 2
+  in  toEnum (if even (big - small) then q else q + 1) :: Colour
